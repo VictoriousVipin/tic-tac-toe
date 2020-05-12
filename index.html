@@ -83,9 +83,9 @@
 					   checkEquality(tiles[0].innerText,tiles[4].innerText,tiles[8].innerText) ||
 					   checkEquality(tiles[6].innerText,tiles[4].innerText,tiles[2].innerText)){
 						gameEnd = true;
-						alert("You Win");
-					}else if(count === 9){
 						if(flag){alert("Player 1 won.");} else {alert("Player 2 won.");}
+					}else if(count === 9){
+						alert('No result.');
 					}
 				}
 				
