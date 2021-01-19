@@ -1,0 +1,68 @@
+body {
+				 display: flex;
+				 flex-direction: column;
+				 text-align: center;
+			}
+			 #mainWrapper {
+				 width: 456px;
+				 text-align: center;
+				 margin: auto 0px;
+				 position: relative;
+				 display: inline-block;
+				 left: 50%;
+				 transform: translate(-50%, 0);
+			}
+			 #restart {
+				 margin: 0 auto;
+			}
+			 .tiles {
+				 float: left;
+				 width: 150px;
+				 border: 1px solid black;
+				 height: 150px;
+				 text-align: center;
+				 cursor: pointer;
+				 transition: 0.5s ease-in-out;
+				 color: transparent;
+				 background-color: #f6fcfc;
+				 border-radius: 5px;
+			}
+			 .tiles:hover:not(.checked) {
+				 background-color: #d1dbdb;
+				 box-shadow: 5px 5px 5px 5px #888;
+			}
+			 .tiles.checked {
+				 color: black;
+				 font-size: 100px;
+				 text-align: center;
+				 line-height: 1.5;
+				 background-color: #d2d6d6;
+			}
+			 .tiles div {
+				 padding-top: 20%;
+			}
+			 #result-message {
+				 width: 456px;
+				 text-align: center;
+				 margin: auto 0px;
+				 position: relative;
+				 left: 50%;
+				 transform: translate(-50%, -100%);
+				 font-size: 100px;
+				 transition: 2s ease-in-out;
+				 height: 456px;
+				 background: #fbf8f8;
+				 opacity: 0.9;
+				 display: none;
+			}
+			 #result-message .message {
+				 transition: 2s ease-in-out;
+				 position: absolute;
+				 top: 50%;
+				 transform: translate(0, -50%);
+				 color: blue;
+				 width: 100%;
+			}
+			 #result-message .message.success {
+				 color: green;
+			}
