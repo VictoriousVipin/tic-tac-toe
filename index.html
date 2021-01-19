@@ -2,102 +2,195 @@
 <html ng-app="myApp">
 	<head>
 		<style>
-			#mainWrapper{
-				width:475px;
-				text-align:center;
-				margin:auto 0px;
+			body {
+				 display: flex;
+				 flex-direction: column;
+				 text-align: center;
 			}
-			.tiles{
-				float:left;
-				width:150px;
-				border: 1px solid black;
-				height:150px;
-				text-align:center;
-				cursor:pointer;
-				color: transparent;
+			 #mainWrapper {
+				 width: 456px;
+				 text-align: center;
+				 margin: auto 0px;
+				 position: relative;
+				 display: inline-block;
+				 left: 50%;
+				 transform: translate(-50%, 0);
 			}
-			.tiles div{
-				padding-top:20%;
+			 #restart {
+				 margin: 0 auto;
 			}
-			.red{
-				background-color:red;
+			 .tiles {
+				 float: left;
+				 width: 150px;
+				 border: 1px solid black;
+				 height: 150px;
+				 text-align: center;
+				 cursor: pointer;
+				 transition: 0.5s ease-in-out;
+				 color: transparent;
+				 background-color: #f6fcfc;
+				 border-radius: 5px;
 			}
-			.green{
-				background-color:green;
+			 .tiles:hover:not(.checked) {
+				 background-color: #d1dbdb;
+				 box-shadow: 5px 5px 5px 5px #888;
 			}
+			 .tiles.checked {
+				 color: black;
+				 font-size: 100px;
+				 text-align: center;
+				 line-height: 1.5;
+				 background-color: #d2d6d6;
+			}
+			 .tiles div {
+				 padding-top: 20%;
+			}
+			 #result-message {
+				 width: 456px;
+				 text-align: center;
+				 margin: auto 0px;
+				 position: relative;
+				 left: 50%;
+				 transform: translate(-50%, -100%);
+				 font-size: 100px;
+				 transition: 2s ease-in-out;
+				 height: 456px;
+				 background: #fbf8f8;
+				 opacity: 0.9;
+				 display: none;
+			}
+			 #result-message .message {
+				 transition: 2s ease-in-out;
+				 position: absolute;
+				 top: 50%;
+				 transform: translate(0, -50%);
+				 color: blue;
+				 width: 100%;
+			}
+			 #result-message .message.success {
+				 color: green;
+			}
+			 
 		</style>
 	</head>
 	<body>
 		<button style="cursor:pointer" id="restart">Restart Game</button>
 		<h1 id="instruction"></h1>
 		<div id="mainWrapper"></div>
+		<div id="result-message"></div>
 		<script type="text/javascript">
-			(function(){
-				var flag, count, gameEnd;
-				
-				document.getElementById("restart").addEventListener("click", function(){
-					resetGame();
-				});
-				
-				var resetGame = function(){
-					var tile,i;
-					flag= false;
-					count = 0;
-					gameEnd = false;
-					document.getElementById("mainWrapper").innerHTML = "";
-					for(i=1; i<=9; i++){
-						tile = document.createElement("div");
-						tile.setAttribute('class','tiles');
-						tile.innerText = i;
-						tile.addEventListener("click", function(){
-							if(this.innerText !== "0" && this.innerText !== "X" && !gameEnd)
-							{
-								changeTile(this);
-							}
-						});
-						document.getElementById("mainWrapper").appendChild(tile);
-					}
-				}
-				
-				var changeTile = function(tile){
-					if(flag){
-						tile.setAttribute("class",tile.getAttribute("class")+" red");
-						tile.innerText = "0";
-					}else{
-						tile.setAttribute("class",tile.getAttribute("class")+" green");
-						tile.innerText = "X";
-					}
-					count++;
-					flag = !flag;
-					checkResult()
-				}
-				
-				var checkResult = function(){
-					var tiles = document.getElementById("mainWrapper").getElementsByClassName("tiles");
-					if(checkEquality(tiles[0].innerText,tiles[1].innerText,tiles[2].innerText) ||
-					   checkEquality(tiles[3].innerText,tiles[4].innerText,tiles[5].innerText) ||
-					   checkEquality(tiles[6].innerText,tiles[7].innerText,tiles[8].innerText) ||
-					   checkEquality(tiles[0].innerText,tiles[3].innerText,tiles[6].innerText) ||
-					   checkEquality(tiles[1].innerText,tiles[4].innerText,tiles[7].innerText) ||
-					   checkEquality(tiles[2].innerText,tiles[5].innerText,tiles[8].innerText) ||
-					   checkEquality(tiles[0].innerText,tiles[4].innerText,tiles[8].innerText) ||
-					   checkEquality(tiles[6].innerText,tiles[4].innerText,tiles[2].innerText)){
-						gameEnd = true;
-						if(flag){alert("Player 1 won.");} else {alert("Player 2 won.");}
-					}else if(count === 9){
-						alert('No result.');
-					}
-				}
-				
-				var checkEquality = function(a,b,c){
-					if(a === b && b === c)
-					{
-						return true;
-					}
-					
-					return false;
-				}
+			(function() {
+			  var flag, count, gameEnd;
+
+			  document.getElementById("restart").addEventListener("click", function() {
 				resetGame();
+			  });
+
+			  var resetGame = function() {
+				var tile, i;
+				flag = false;
+				count = 0;
+				gameEnd = false;
+				document.getElementById("mainWrapper").innerHTML = "";
+				document
+				  .querySelector("#result-message")
+				  .setAttribute("style", "display: none");
+				for (i = 1; i <= 9; i++) {
+				  tile = document.createElement("div");
+				  tile.setAttribute("class", "tiles");
+				  tile.innerText = i;
+				  tile.addEventListener("click", function() {
+					if (this.innerText !== "0" && this.innerText !== "X" && !gameEnd) {
+					  changeTile(this);
+					}
+				  });
+				  document.getElementById("mainWrapper").appendChild(tile);
+				}
+			  };
+
+			  var changeTile = function(tile) {
+				if (flag) {
+				  tile.setAttribute("class", tile.getAttribute("class") + " red checked");
+				  tile.innerText = "0";
+				} else {
+				  tile.setAttribute("class", tile.getAttribute("class") + " green checked");
+				  tile.innerText = "X";
+				}
+				count++;
+				flag = !flag;
+				checkResult();
+			  };
+
+			  var checkResult = function() {
+				var tiles = document
+				  .getElementById("mainWrapper")
+				  .getElementsByClassName("tiles");
+				if (
+				  checkEquality(
+					tiles[0].innerText,
+					tiles[1].innerText,
+					tiles[2].innerText
+				  ) ||
+				  checkEquality(
+					tiles[3].innerText,
+					tiles[4].innerText,
+					tiles[5].innerText
+				  ) ||
+				  checkEquality(
+					tiles[6].innerText,
+					tiles[7].innerText,
+					tiles[8].innerText
+				  ) ||
+				  checkEquality(
+					tiles[0].innerText,
+					tiles[3].innerText,
+					tiles[6].innerText
+				  ) ||
+				  checkEquality(
+					tiles[1].innerText,
+					tiles[4].innerText,
+					tiles[7].innerText
+				  ) ||
+				  checkEquality(
+					tiles[2].innerText,
+					tiles[5].innerText,
+					tiles[8].innerText
+				  ) ||
+				  checkEquality(
+					tiles[0].innerText,
+					tiles[4].innerText,
+					tiles[8].innerText
+				  ) ||
+				  checkEquality(tiles[6].innerText, tiles[4].innerText, tiles[2].innerText)
+				) {
+				  gameEnd = true;
+				  if (flag) {
+					document.querySelector("#result-message").innerHTML =
+					  "<div class='message success'>Player 1 won.</div>";
+				  } else {
+					document.querySelector("#result-message").innerHTML =
+					  "<div class='message success'>Player 2 won.</div>";
+				  }
+				  document
+					.querySelector("#result-message")
+					.setAttribute("style", "display: inline-block");
+				} else if (count === 9) {
+				  document.querySelector("#result-message").innerHTML =
+					"<div class='message'>No result.</div>";
+				  document
+					.querySelector("#result-message")
+					.setAttribute("style", "display: inline-block");
+				}
+			  };
+
+			  var checkEquality = function(a, b, c) {
+				if (a === b && b === c) {
+				  return true;
+				}
+
+				return false;
+			  };
+			  resetGame();
 			})();
 		</script>
 	</body>
